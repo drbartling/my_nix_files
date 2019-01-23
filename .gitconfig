@@ -1,0 +1,101 @@
+[user]
+    name = Ryan Bartling
+    email = ryan.bartling@gmail.com
+
+[alias]
+    # List git aliases
+    alias = config --get-regexp alias
+
+    # These are recommended aliases from the git manual
+    br = "branch"
+    st = "status"
+    co = "checkout"
+    ci = "commit"
+
+    # Commit shortcuts
+    ca = commit -a
+    cam = commit -a --amend
+
+    # Graphed logs for a specific branch with varying degrees of verbosity
+    # Graph Hash - Subject - Author - Decoration
+    lg1-specific = log --graph --abbrev-commit --decorate --format=format:'%C(dim yellow)%h%C(reset)\t- %C(white)%<(54,trunc)%s%C(reset) %C(dim white)- %an%C(reset)%C(auto)%d%C(reset)'
+    # Graph Hash - Date (Relative date) (decoration)
+    # Subject - Author
+    lg2-specific = log --graph --abbrev-commit --decorate --format=format:'%C(dim yellow)%h%C(reset)\t- %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(auto)%d%C(reset)%n''\t\t  %C(white)%<(60,trunc)%s%C(reset) %C(dim white)- %an%C(reset)%n'
+    # Graph Hash - Date (Relative date) (decoration)
+    # Subject
+    # Author <e-mail> (Commiter <e-mail>)
+    lg3-specific = log --graph --abbrev-commit --decorate --format=format:'%C(dim yellow)%h%C(reset)\t- %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset) %C(bold cyan)(committed: %cD)%C(reset) %C(auto)%d%C(reset)%n''\t\t  %C(white)%<(60,trunc)%s%C(reset)%n''\t\t  %C(dim white)- %an <%ae> %C(reset) %C(dim white)(committer: %cn <%ce>)%C(reset)%n'
+
+    # Short hand for the above aliases
+    lgs = !"git lg1-specific"
+    lg1s = !"git lg1-specific"
+    lg2s = !"git lg2-specific"
+    lg3s = !"git lg3-specific"
+
+    # Show commits across all branches
+    lg = !"git lg1"
+    lg1 = !"git lg1-specific --all"
+    lg2 = !"git lg2-specific --all"
+    lg3 = !"git lg3-specific --all"
+
+    # Show branches
+    list-branch = branch --format='%(HEAD) %(color:green)%(committerdate:relative)%(color:reset) - %(color:dim yellow)%(objectname:short)%(color:reset) - %(color:red)%(refname:short)%(color:reset) - %(color:green)%(authorname)%(color:reset) - %(contents:subject)'
+    lb = !"git list-branch"
+    lbr = !"git list-branch -r"
+    lbs = !"git list-branch -a --sort=-committerdate"
+
+    # Keep local branches in sync with remote branches
+    sync = "!sh -c 'git checkout --quiet --detach HEAD && \
+                    git fetch origin develop:develop ; \
+                    git fetch -p ; \
+                    git checkout --quiet -'"
+
+    # Ignore/unignore changes made to specific files
+    # (useful for tracked config files)
+    ignore = "update-index --assume-unchanged"
+    unignore = "update-index --no-assume-unchanged"
+
+    # List files that have been explicitly untracked
+    ignored = !git ls-files -v | grep "^[[:lower:]]"
+
+[core]
+    editor = vim
+    fileMode = false
+
+[pager]
+    # Highlight word changes in git diff
+    diff = /usr/share/doc/git/contrib/diff-highlight/diff-highlight | less
+    show = /usr/share/doc/git/contrib/diff-highlight/diff-highlight | less
+    # Truncate end of line, rather than wrapping
+    log = less -S
+    branch = less -S
+    config = less -S
+
+# Better highlighting for git diff
+[color "diff-highlight"]
+  oldNormal = red bold
+  oldHighlight = red bold 52
+  newNormal = green bold
+  newHighlight = green bold 22
+[color "diff"]
+  commit = green
+  meta = yellow
+  frag = cyan
+  old = red
+  new = green
+  whitespace = red reverse
+
+# GUI tools for git diff
+[merge]
+    tool = kdiff3
+[mergetool "kdiff3"]
+    trustExitCode = false
+[diff]
+    guitool = kdiff3
+[difftool "kdiff3"]
+    trustExitCode = false
+
+# Safer push.  Simple will fail where current would push to a branch with the same name (even if it isn't tracked).
+[push]
+    default = simple
