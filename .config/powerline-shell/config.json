@@ -1,0 +1,12 @@
+{
+	"segments": [
+		"time",
+		"cwd", 
+		"git", 
+		"jobs", 
+		"root"
+	],
+	"cwd": {
+		"mode":"dironly"
+	}
+}
