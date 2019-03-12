@@ -106,3 +106,12 @@ function _update_ps1() {
 if [[ $TERM != linux && ! $PROMPT_COMMAND =~ _update_ps1 ]]; then
 	PROMPT_COMMAND="_update_ps1; $PROMPT_COMMAND"
 fi
+
+sshd_status=$(service ssh status)
+if [[ $sshd_status = *"is not running"* ]]; then
+  sudo service ssh --full-restart
+fi
+
+export CC=clang
+export CXX=clang++
+
