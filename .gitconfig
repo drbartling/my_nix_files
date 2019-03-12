@@ -39,17 +39,29 @@
     lg2 = !"git lg2-specific --all"
     lg3 = !"git lg3-specific --all"
 
+    lgf = !"git lg --first-parent"
+
+    showst = show --stat
+
     # Show branches
     list-branch = branch --format='%(HEAD) %(color:green)%(committerdate:relative)%(color:reset) - %(color:dim yellow)%(objectname:short)%(color:reset) - %(color:red)%(refname:short)%(color:reset) - %(color:green)%(authorname)%(color:reset) - %(contents:subject)'
     lb = !"git list-branch"
     lbr = !"git list-branch -r"
     lbs = !"git list-branch -a --sort=-committerdate"
+    # List branches that have been merged into dev
+    lbm = !git branch --merged dev | grep -v dev
+    # Delete branches merged into dev
+    lbmd = !"git lbm" | xargs git branch -D
 
     # Keep local branches in sync with remote branches
     sync = "!sh -c 'git checkout --quiet --detach HEAD && \
                     git fetch origin develop:develop ; \
                     git fetch -p ; \
                     git checkout --quiet -'"
+
+    # Push local branch to origin, creating new branch on origin
+    push-new-branch = "push --set-upstream origin HEAD"
+    pnb = !"git push-new-branch"
 
     # Ignore/unignore changes made to specific files
     # (useful for tracked config files)
