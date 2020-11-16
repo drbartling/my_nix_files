@@ -1,6 +1,4 @@
 [user]
-    name = Ryan Bartling
-    email = ryan.bartling@gmail.com
 
 [alias]
     # List git aliases
@@ -48,9 +46,9 @@
     lb = !"git list-branch"
     lbr = !"git list-branch -r"
     lbs = !"git list-branch -a --sort=-committerdate"
-    # List branches that have been merged into dev
-    lbm = !git branch --merged dev | grep -v dev
-    # Delete branches merged into dev
+    # List branches that have been merged into develop
+    lbm = !git branch --merged develop | grep -v develop
+    # Delete branches merged into develop
     lbmd = !"git lbm" | xargs git branch -D
 
     # Keep local branches in sync with remote branches
