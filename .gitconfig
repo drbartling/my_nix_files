@@ -12,18 +12,21 @@
 
     # Commit shortcuts
     ca = commit -a
-    cam = commit -a --amend
+    cae = commit -a --amend
+    cam = commit -a --amend --no-edit
+    cie = commit --amend
 
     # Graphed logs for a specific branch with varying degrees of verbosity
     # Graph Hash - Subject - Author - Decoration
     lg1-specific = log --graph --abbrev-commit --decorate --format=format:'%C(dim yellow)%h%C(reset)\t- %C(white)%<(54,trunc)%s%C(reset) %C(dim white)- %an%C(reset)%C(auto)%d%C(reset)'
+    lg1-subject = log --graph --abbrev-commit --decorate --format=format:'%C(dim yellow)%h%C(reset)\t- %C(white)%<(80,trunc)%s'
     # Graph Hash - Date (Relative date) (decoration)
     # Subject - Author
     lg2-specific = log --graph --abbrev-commit --decorate --format=format:'%C(dim yellow)%h%C(reset)\t- %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(auto)%d%C(reset)%n''\t\t  %C(white)%<(60,trunc)%s%C(reset) %C(dim white)- %an%C(reset)%n'
     # Graph Hash - Date (Relative date) (decoration)
     # Subject
     # Author <e-mail> (Commiter <e-mail>)
-    lg3-specific = log --graph --abbrev-commit --decorate --format=format:'%C(dim yellow)%h%C(reset)\t- %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset) %C(bold cyan)(committed: %cD)%C(reset) %C(auto)%d%C(reset)%n''\t\t  %C(white)%<(60,trunc)%s%C(reset)%n''\t\t  %C(dim white)- %an <%ae> %C(reset) %C(dim white)(committer: %cn <%ce>)%C(reset)%n'
+    lg3-specific = log --graph --abbrev-commit --decorate --format=format:'%C(dim yellow)%h%C(reset)\t- %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset) %C(bold cyan)(committed: %cD)%C(reset) %C(auto)%d%C(reset)%n''\t\t  %C(white)%<(80,trunc)%s%C(reset)%n''\t\t  %C(dim white)- %an <%ae> %C(reset) %C(dim white)(committer: %cn <%ce>)%C(reset)%n'
 
     # Short hand for the above aliases
     lgs = !"git lg1-specific"
@@ -34,6 +37,7 @@
     # Show commits across all branches
     lg = !"git lg1"
     lg1 = !"git lg1-specific --all"
+    lg1m = !"git lg1-subject --all"
     lg2 = !"git lg2-specific --all"
     lg3 = !"git lg3-specific --all"
 
@@ -53,7 +57,9 @@
 
     # Keep local branches in sync with remote branches
     sync = "!sh -c 'git checkout --quiet --detach HEAD && \
-                    git fetch origin develop:develop ; \
+                    git fetch origin develop:develop 2> /dev/null ; \
+                    git fetch origin master:master 2> /dev/null ; \
+                    git fetch origin main:main 2> /dev/null ; \
                     git fetch -p ; \
                     git checkout --quiet -'"
 
@@ -109,3 +115,5 @@
 # Safer push.  Simple will fail where current would push to a branch with the same name (even if it isn't tracked).
 [push]
     default = simple
+[credential]
+	helper = store
