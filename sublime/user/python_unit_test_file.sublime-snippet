@@ -1,0 +1,13 @@
+<snippet>
+	<content><![CDATA[
+#!/usr/bin/env python3
+
+import pytest
+
+import ${1:${TM_FILENAME/test_(.*)\.py|(.*)_test\.py/$1$2/g}}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>utf</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<scope>source.python</scope>
+</snippet>

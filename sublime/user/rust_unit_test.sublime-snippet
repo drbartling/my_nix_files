@@ -1,0 +1,20 @@
+<snippet>
+	<content><![CDATA[
+    #[rstest(
+        ${3:input}, ${4:expected},
+        case::${2:case_label}(
+            $3, $4,
+        ),
+    )]
+    fn test_${1:function_name}(
+        $3, $4
+    ) {
+        let result = $1($3);
+        assert_eq!(result, $4);
+    }
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>ut</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<scope>source.rust</scope>
+</snippet>

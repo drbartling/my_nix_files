@@ -1,0 +1,21 @@
+{
+	"bootstrapped": true,
+	"in_process_packages":
+	[
+	],
+	"installed_packages":
+	[
+		"Behave Step Finder",
+		"Behave Toolkit",
+		"INI",
+		"JSON Reindent",
+		"LSP",
+		"MarkdownEditing",
+		"Package Control",
+		"PyRefactor",
+		"Rust Enhanced",
+		"RustFmt",
+		"sublack",
+		"TOML"
+	]
+}
