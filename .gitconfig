@@ -75,6 +75,9 @@
     # List files that have been explicitly untracked
     ignored = !git ls-files -v | grep "^[[:lower:]]"
 
+    # Renormalize line endings based on gitattributes
+    renorm = "add --renormalize ."
+
 [core]
     editor = vim
     fileMode = false
