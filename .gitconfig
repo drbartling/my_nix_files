@@ -78,6 +78,65 @@
     # Renormalize line endings based on gitattributes
     renorm = "add --renormalize ."
 
+    # Logic:
+    #
+    # The 'git stash save' fails if the tree is clean (instead of
+    # creating an empty stash :P). So, we only 'stash' and 'pop' if
+    # the tree is dirty.
+    #
+    # The 'git rebase --whitespace=fix HEAD~' throws away the commit
+    # if it's empty, and adding '--keep-empty' prevents the whitespace
+    # from being fixed. So, we first check that the index is dirty.
+    #
+    # Also:
+    # - '(! git diff-index --quiet --cached HEAD)' is true (zero) if
+    #   the index is dirty
+    # - '(! git diff-files --quiet .)' is true if the tree is dirty
+    #
+    # The 'rebase --whitespace=fix' trick is from here:
+    # https://stackoverflow.com/a/19156679/470844
+    fixws = !"\
+        if (! git diff-files --quiet .) && \
+           (! git diff-index --quiet --cached HEAD) ; then \
+            git commit -m FIXWS_SAVE_INDEX && \
+            git stash save FIXWS_SAVE_TREE && \
+            git rebase --whitespace=fix HEAD~ && \
+            git stash pop && \
+            git reset --soft HEAD~ ; \
+        elif (! git diff-index --quiet --cached HEAD) ; then \
+            git commit -m FIXWS_SAVE_INDEX && \
+            git rebase --whitespace=fix HEAD~ && \
+            git reset --soft HEAD~ ; \
+        fi"
+
+    # The different cases are:
+    # - dirty tree and dirty index
+    # - dirty tree and clean index
+    # - clean tree and dirty index
+    #
+    # We have to consider separate cases because the 'git rebase
+    # --whitespace=fix' is not compatible with empty commits (adding
+    # '--keep-empty' makes Git not fix the whitespace :P).
+    fixws-global-tree-and-index = !"\
+        if (! git diff-files --quiet .) && \
+           (! git diff-index --quiet --cached HEAD) ; then \
+            git commit -m FIXWS_SAVE_INDEX && \
+            git add -u :/ && \
+            git commit -m FIXWS_SAVE_TREE && \
+            git rebase --whitespace=fix HEAD~2 && \
+            git reset HEAD~ && \
+            git reset --soft HEAD~ ; \
+        elif (! git diff-files --quiet .) ; then \
+            git add -u :/ && \
+            git commit -m FIXWS_SAVE_TREE && \
+            git rebase --whitespace=fix HEAD~ && \
+            git reset HEAD~ ; \
+        elif (! git diff-index --quiet --cached HEAD) ; then \
+            git commit -m FIXWS_SAVE_INDEX && \
+            git rebase --whitespace=fix HEAD~ && \
+            git reset --soft HEAD~ ; \
+        fi"
+
 [core]
     editor = vim
     fileMode = false
