@@ -137,6 +137,12 @@
             git reset --soft HEAD~ ; \
         fi"
 
+[branch]
+    sort = -committerdate
+
+[commit]
+        verbose = true
+
 [core]
     editor = vim
     fileMode = false
@@ -149,6 +155,13 @@
     log = less -S
     branch = less -S
     config = less -S
+
+[rerere]
+        enabled = true
+        autoupdate = true
+
+[tag]
+    sort = version:refname
 
 # Better highlighting for git diff
 [color "diff-highlight"]
@@ -170,12 +183,29 @@
 [mergetool "kdiff3"]
     trustExitCode = false
 [diff]
+    algorithm = histogram
+    colorMoved = plain
     guitool = kdiff3
+    mnemonicPrefix = true
+    renames = true
 [difftool "kdiff3"]
     trustExitCode = false
 
 # Safer push.  Simple will fail where current would push to a branch with the same name (even if it isn't tracked).
 [push]
     default = simple
+    autoSetupRemote = true
+    followTags = true
 [credential]
 	helper = store
+
+[fetch]
+    prune = true
+    pruneTags = true
+    all = true
+
+
+[help]
+        autocorrect = prompt
+# [url "https://"]
+# 	insteadOf = ssh://
